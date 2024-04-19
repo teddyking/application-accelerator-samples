@@ -57,6 +57,8 @@ engine {
     +InvokeFragment(reference: "java-version")
     // Include devcontainer files if selected
     +InvokeFragment(reference: "devcontainer")
+    // Update workload.yaml files with Git repo if created
+    +InvokeFragment(reference: "tap-workload")
   }
   UniquePath(strategy: UseLast)
 
