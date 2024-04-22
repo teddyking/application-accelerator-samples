@@ -3,7 +3,7 @@ engine {
   // Include files for the selected build tool
   if (#buildTool == "maven") {
     Exclude({"*gradle*", "Tiltfile_gradle_vscode", "Tiltfile_gradle_intellij"})
-    +InvokeFragment(reference: "build-wrapper-maven")
+    + InvokeFragment(reference: "build-wrapper-maven")
   }
   if (#buildTool == "gradle") {
     applyTo("settings.gradle") {
@@ -11,15 +11,15 @@ engine {
     }
     if (#ide == "intellij") {
       Exclude({"Tiltfile", "Tiltfile_gradle_vscode"})
-      RewritePath(regex: "Tiltfile_gradle_intellij", rewriteTo: "Tiltfile")
+      RewritePath(regex: "Tiltfile_gradle_intellij", rewriteTo: 'Tiltfile')
     }
     if (#ide == "vscode") {
       Exclude({"Tiltfile", "Tiltfile_gradle_intellij"})
-      RewritePath(regex: "Tiltfile_gradle_vscode", rewriteTo: "Tiltfile")
+      RewritePath(regex: "Tiltfile_gradle_vscode", rewriteTo: 'Tiltfile')
     }
     {
       Exclude({"pom.xml"})
-      +InvokeFragment(reference: "build-wrapper-gradle")
+      + InvokeFragment(reference: "build-wrapper-gradle")
     }
   }
 
@@ -28,7 +28,7 @@ engine {
     ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
   }
   applyTo("catalog/*.yaml") {
-    ReplaceText({{text: "tanzu-java-web-app", with: #artifactId}})
+    ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
   }
   applyTo("config/workload.yaml") {
     ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
@@ -45,7 +45,7 @@ engine {
     applyTo("README-native.md") {
       ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
     }
-    RewritePath(regex: "README-native.md", rewriteTo: "README.md")
+    RewritePath(regex: "README-native.md", rewriteTo: 'README.md')
     UniquePath(strategy: Append)
   } else {
     Exclude({"config/workload-native.yaml", "README-native.md"})
@@ -54,11 +54,11 @@ engine {
   {
     Include({'**'})
     // Update the java version
-    +InvokeFragment(reference: "java-version")
+    + InvokeFragment(reference: "java-version")
     // Include devcontainer files if selected
-    +InvokeFragment(reference: "devcontainer")
+    + InvokeFragment(reference: "devcontainer")
     // Update workload.yaml files with Git repo if created
-    +InvokeFragment(reference: "tap-workload")
+    + InvokeFragment(reference: "tap-workload")
   }
   UniquePath(strategy: UseLast)
 
